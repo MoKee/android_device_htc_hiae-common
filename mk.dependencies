@@ -1,5 +1,9 @@
 [
   {
+    "repository": "android_vendor_htc_hiae-common",
+    "target_path": "vendor/htc/hiae-common"
+  },
+  {
     "repository": "android_kernel_htc_msm8952",
     "target_path": "kernel/htc/msm8952"
   },
