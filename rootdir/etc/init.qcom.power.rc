@@ -37,6 +37,7 @@ on enable-low-power
     write /sys/class/devfreq/qcom,cpubw.51/governor "bw_hwmon"
     write /sys/class/devfreq/qcom,cpubw.51/bw_hwmon/cpu_io_percent 20
     write /sys/class/devfreq/qcom,cpubw.51/bw_hwmon/guard_band_mbps 30
+    write /sys/class/devfreq/qcom,gpubw.38/governor "bw_hwmon"
     write /sys/class/devfreq/qcom,gpubw.38/bw_hwmon/io_percent 40
 
     # disable thermal & BCL core_control to update interactive gov settings
@@ -128,6 +129,18 @@ on enable-low-power
     write /sys/module/lpm_levels/lpm_workarounds/dynamic_clock_gating 1
     # Enable timer migration to little cluster
     write /proc/sys/kernel/power_aware_timer_migration 1
+
+    # ZRAM
+    swapon_all /fstab.qcom
+    write /proc/sys/vm/swappiness 100
+
+    # Process reclaim
+    write /sys/module/process_reclaim/parameters/enable_process_reclaim 1
+    write /sys/module/process_reclaim/parameters/pressure_min 10
+    write /sys/module/process_reclaim/parameters/per_swap_size 1024
+
+    write /sys/module/process_reclaim/parameters/pressure_max 70
+    write /sys/module/process_reclaim/parameters/swap_opt_eff 30
 
     rm /data/system/perfd/default_values
     start perfd
