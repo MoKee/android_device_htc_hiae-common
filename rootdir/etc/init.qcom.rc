@@ -32,6 +32,7 @@ import init.target.rc
 on early-init
     symlink /data/tombstones /tombstones
 
+    mkdir /carrier 0770 system system
     mkdir /dsp 0771 media media
     mkdir /firmware 0771 system system
     mkdir /firmware/adsp 0771 system system
@@ -142,6 +143,12 @@ on post-fs-data
 on early-boot
     chown root audio /sys/kernel/boot_adsp/boot
     write /sys/kernel/boot_adsp/boot 1
+
+    # SSR Setup
+    write /sys/bus/msm_subsys/devices/subsys0/restart_level "related"
+    write /sys/bus/msm_subsys/devices/subsys1/restart_level "related"
+    write /sys/bus/msm_subsys/devices/subsys2/restart_level "related"
+    write /sys/bus/msm_subsys/devices/subsys3/restart_level "related"
 
 on boot
     # Create QMUX deamon socket area
